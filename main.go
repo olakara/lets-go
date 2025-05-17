@@ -6,14 +6,17 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Path)
 	w.Write([]byte("Hello from Snippetbox"))
 }
 
 func snippetView(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Path)
 	w.Write([]byte("Display a specific snippet"))
 }
 
 func snippetCreate(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Path)
 	w.Write([]byte("Create a new snippet"))
 }
 
