@@ -1,19 +1,30 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 )
 
 func addCommonHeaders(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-Server", "Go")
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
 	addCommonHeaders(w)
 	log.Println(r.URL.Path)
+	ts, err := template.ParseFiles("ui/html/pages/home.tmpl")
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 	w.Write([]byte("Hello from Snippetbox"))
 }
 
