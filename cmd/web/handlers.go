@@ -43,17 +43,3 @@ func snippetCreatePost(w http.ResponseWriter, r *http.Request) {
 	// Simulate creating a new snippet
 	w.Write([]byte("Snippet created"))
 }
-
-func main() {
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("GET /home/{$}", home)
-	mux.HandleFunc("GET /snippet/view/{id}", snippetView)
-	mux.HandleFunc("GET /snippet/create", snippetCreate)
-	mux.HandleFunc("POST /snippet/create", snippetCreatePost)
-	log.Println("Starting server on :8080")
-	err := http.ListenAndServe(":8080", mux)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
