@@ -16,5 +16,10 @@ func SnippetViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	msg := "Display a specific snippet with ID: " + strconv.Itoa(id)
-	w.Write([]byte(msg))
+	_, err = w.Write([]byte(msg))
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }
