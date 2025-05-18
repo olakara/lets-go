@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (app *Application) HomeHandler(w http.ResponseWriter, r *http.Request) {
+func (app *Application) homeHandler(w http.ResponseWriter, r *http.Request) {
 
 	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)

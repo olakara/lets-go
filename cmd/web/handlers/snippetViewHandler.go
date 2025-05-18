@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func (app *Application) SnippetViewHandler(w http.ResponseWriter, r *http.Request) {
+func (app *Application) snippetViewHandler(w http.ResponseWriter, r *http.Request) {
 	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	// Extract the snippet ID from the URL
