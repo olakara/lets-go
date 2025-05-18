@@ -32,17 +32,8 @@ func main() {
 		Logger: logger,
 	}
 
-	mux := http.NewServeMux()
-
-	fileServer := http.FileServer(http.Dir(cfg.staticDir))
-	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
-	mux.HandleFunc("GET /home/{$}", app.HomeHandler)
-	mux.HandleFunc("GET /snippet/view/{id}", app.SnippetViewHandler)
-	mux.HandleFunc("GET /snippet/create", app.SnippetCreateHandler)
-	mux.HandleFunc("POST /snippet/create", app.SnippetCreatePostHandler)
-
 	logger.Info("Starting server on " + cfg.addr)
-	err := http.ListenAndServe(cfg.addr, mux)
+	err := http.ListenAndServe(cfg.addr, app.Routes())
 	if err != nil {
 		logger.Error(err.Error())
 	}

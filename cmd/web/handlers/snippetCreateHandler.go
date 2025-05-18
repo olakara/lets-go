@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (app *Application) SnippetCreateHandler(w http.ResponseWriter, r *http.Request) {
+func (app *Application) snippetCreateHandler(w http.ResponseWriter, r *http.Request) {
 	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	_, err := w.Write([]byte("Create a new snippet"))
@@ -14,7 +14,7 @@ func (app *Application) SnippetCreateHandler(w http.ResponseWriter, r *http.Requ
 	}
 }
 
-func (app *Application) SnippetCreatePostHandler(w http.ResponseWriter, r *http.Request) {
+func (app *Application) snippetCreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	w.WriteHeader(http.StatusCreated)
