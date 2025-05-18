@@ -1,30 +1,27 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 )
 
-func SnippetCreateHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL.Path)
+func (app *Application) SnippetCreateHandler(w http.ResponseWriter, r *http.Request) {
+	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	_, err := w.Write([]byte("Create a new snippet"))
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
 }
 
-func SnippetCreatePostHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL.Path)
+func (app *Application) SnippetCreatePostHandler(w http.ResponseWriter, r *http.Request) {
+	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	w.WriteHeader(http.StatusCreated)
 	// Simulate creating a new snippet
 	_, err := w.Write([]byte("Snippet created"))
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
 }

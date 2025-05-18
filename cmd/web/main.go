@@ -28,14 +28,18 @@ func main() {
 
 	logger := slog.New(loggerHandler)
 
+	app := &handlers.Application{
+		Logger: logger,
+	}
+
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.Dir(cfg.staticDir))
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
-	mux.HandleFunc("GET /home/{$}", handlers.HomeHandler)
-	mux.HandleFunc("GET /snippet/view/{id}", handlers.SnippetViewHandler)
-	mux.HandleFunc("GET /snippet/create", handlers.SnippetCreateHandler)
-	mux.HandleFunc("POST /snippet/create", handlers.SnippetCreatePostHandler)
+	mux.HandleFunc("GET /home/{$}", app.HomeHandler)
+	mux.HandleFunc("GET /snippet/view/{id}", app.SnippetViewHandler)
+	mux.HandleFunc("GET /snippet/create", app.SnippetCreateHandler)
+	mux.HandleFunc("POST /snippet/create", app.SnippetCreatePostHandler)
 
 	logger.Info("Starting server on " + cfg.addr)
 	err := http.ListenAndServe(cfg.addr, mux)

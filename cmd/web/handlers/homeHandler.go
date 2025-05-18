@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL.Path)
+func (app *Application) HomeHandler(w http.ResponseWriter, r *http.Request) {
+
+	app.Logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 
 	files := []string{
@@ -18,14 +18,13 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
 
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, r, err)
+		return
 	}
 }
