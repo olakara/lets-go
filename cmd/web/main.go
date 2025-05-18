@@ -21,7 +21,11 @@ func main() {
 	flag.StringVar(&cfg.staticDir,"staticDir", "./ui/static/", "Path to static files")
 	flag.Parse()
 
-	loggerHandler := slog.NewTextHandler(os.Stdout, nil)
+	loggerHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource: true,
+		Level: slog.LevelDebug,
+	})
+	
 	logger := slog.New(loggerHandler)
 
 	mux := http.NewServeMux()
