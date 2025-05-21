@@ -28,9 +28,7 @@ func main() {
 
 	logger := slog.New(loggerHandler)
 
-	app := &handlers.Application{
-		Logger: logger,
-	}
+	app := handlers.NewApplication(logger)
 
 	logger.Info("Starting server on " + cfg.addr)
 	err := http.ListenAndServe(cfg.addr, app.Routes())

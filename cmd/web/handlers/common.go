@@ -7,7 +7,13 @@ import (
 )
 
 type Application struct {
-	Logger *slog.Logger
+	logger *slog.Logger
+}
+
+func NewApplication(logger *slog.Logger) *Application {
+	return &Application{
+		logger: logger,
+	}
 }
 
 func addCommonHeaders(w http.ResponseWriter) {
@@ -22,7 +28,7 @@ func (app *Application) serverError(w http.ResponseWriter, r *http.Request, err 
 		trace  = string(debug.Stack())
 	)
 
-	app.Logger.Error(err.Error(), "method", method, "url", uri, "trace", trace)
+	app.logger.Error(err.Error(), "method", method, "url", uri, "trace", trace)
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
 
@@ -37,8 +43,8 @@ func (app *Application) Routes() *http.ServeMux {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 	mux.HandleFunc("/home/", app.homeHandler)
 	mux.HandleFunc("/snippet/view/{id}", app.snippetViewHandler)
-	mux.HandleFunc("/snippet/create", app.snippetCreateHandler)
-	mux.HandleFunc("/snippet/create", app.snippetCreatePostHandler)
+	mux.HandleFunc("GET /snippet/create", app.snippetCreateHandler)
+	mux.HandleFunc("POST /snippet/create", app.snippetCreatePostHandler)
 
 	return mux
 }
