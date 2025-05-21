@@ -7,7 +7,7 @@ import (
 
 func (app *Application) homeHandler(w http.ResponseWriter, r *http.Request) {
 
-	app.Logger.Info(r.URL.Path)
+	app.logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 
 	files := []string{

@@ -5,7 +5,7 @@ import (
 )
 
 func (app *Application) snippetCreateHandler(w http.ResponseWriter, r *http.Request) {
-	app.Logger.Info(r.URL.Path)
+	app.logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	_, err := w.Write([]byte("Create a new snippet"))
 	if err != nil {
@@ -15,7 +15,7 @@ func (app *Application) snippetCreateHandler(w http.ResponseWriter, r *http.Requ
 }
 
 func (app *Application) snippetCreatePostHandler(w http.ResponseWriter, r *http.Request) {
-	app.Logger.Info(r.URL.Path)
+	app.logger.Info(r.URL.Path)
 	addCommonHeaders(w)
 	w.WriteHeader(http.StatusCreated)
 	// Simulate creating a new snippet

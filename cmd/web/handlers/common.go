@@ -7,7 +7,13 @@ import (
 )
 
 type Application struct {
-	Logger *slog.Logger
+	logger *slog.Logger
+}
+
+func NewApplication(logger *slog.Logger) *Application {
+	return &Application{
+		logger: logger,
+	}
 }
 
 func addCommonHeaders(w http.ResponseWriter) {
@@ -22,7 +28,7 @@ func (app *Application) serverError(w http.ResponseWriter, r *http.Request, err 
 		trace  = string(debug.Stack())
 	)
 
-	app.Logger.Error(err.Error(), "method", method, "url", uri, "trace", trace)
+	app.logger.Error(err.Error(), "method", method, "url", uri, "trace", trace)
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
 
