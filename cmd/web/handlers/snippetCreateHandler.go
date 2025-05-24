@@ -17,11 +17,14 @@ func (app *Application) snippetCreateHandler(w http.ResponseWriter, r *http.Requ
 func (app *Application) snippetCreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	app.logger.Info(r.URL.Path)
 	addCommonHeaders(w)
-	w.WriteHeader(http.StatusCreated)
-	// Simulate creating a new snippet
-	_, err := w.Write([]byte("Snippet created"))
+	title := "Create a new snippet"
+	content := "This is the content of the snippet."
+	expires := 7 // days
+
+	id, err:= app.snippets.Insert(title, content, expires)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
+	http.Redirect(w, r, "/snippet/view/"+id.String(), http.StatusSeeOther)
 }

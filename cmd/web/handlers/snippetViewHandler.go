@@ -15,10 +15,10 @@ func (app *Application) snippetViewHandler(w http.ResponseWriter, r *http.Reques
 		app.serverError(w, r, err)
 		return
 	}
-	msg := "Display a specific snippet with ID: " + strconv.Itoa(id)
-	_, err = w.Write([]byte(msg))
+	snippet, err := app.snippets.Get(id)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
+	app.logger.Info(snippet.ToString())
 }

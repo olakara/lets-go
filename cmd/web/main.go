@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log/slog"
 	"net/http"
 	"os"
 	"snippetbox/cmd/web/handlers"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type config struct {
@@ -28,10 +31,17 @@ func main() {
 
 	logger := slog.New(loggerHandler)
 
-	app := handlers.NewApplication(logger)
+	dbPool, err:= pgxpool.New(context.Background(), "postgres://spinUser:jaCk-will-c0st@localhost:5432/snippetDB")
+	if err != nil {
+		logger.Error("Unable to connect to database", "error", err)
+		os.Exit(1)
+	}	
+	defer dbPool.Close()
+
+	app := handlers.NewApplication(logger, dbPool)
 
 	logger.Info("Starting server on " + cfg.addr)
-	err := http.ListenAndServe(cfg.addr, app.Routes())
+	err = http.ListenAndServe(cfg.addr, app.Routes())
 	if err != nil {
 		logger.Error(err.Error())
 	}

@@ -4,15 +4,20 @@ import (
 	"log/slog"
 	"net/http"
 	"runtime/debug"
+	"snippetbox/internal/models"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Application struct {
 	logger *slog.Logger
+	snippets *models.SnippetModel
 }
 
-func NewApplication(logger *slog.Logger) *Application {
+func NewApplication(logger *slog.Logger,dbPool *pgxpool.Pool) *Application {
 	return &Application{
 		logger: logger,
+		snippets: &models.SnippetModel{DB: dbPool},
 	}
 }
 
