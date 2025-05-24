@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: snippetbox-postgres
+    environment:
+      POSTGRES_DB: snippetDB
+      POSTGRES_USER: spinUser
+      POSTGRES_PASSWORD: jaCk-will-c0st
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.data/pg:/var/lib/postgresql/data
+    restart: unless-stopped
